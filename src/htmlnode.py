@@ -22,16 +22,17 @@ class HTMLNode():
         
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
     
+         
+
+    
 class LeafNode(HTMLNode):
     
     def __init__(self, tag, value, props=None):
-        super().__init__(tag=tag, value=value, props=props)
-        self.children = None
-        self.value = value
-
-    def to_html(self):
-        if not self.value:
+        if not value:
             raise ValueError
+        super().__init__(tag=tag, value=value, props=props)        
+
+    def to_html(self):        
         if not self.tag:
             return self.value
         if not self.props:
@@ -41,21 +42,29 @@ class LeafNode(HTMLNode):
     
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
-        super().__init__(tag, children, props)
-        self.children = children
-        self.value = None
-
-    def to_html(self):
-        if not self.tag:
-            raise ValueError("No Tag!")
-        if not self.children:
-            raise ValueError("Children Required!")
         
-        content = ''.join(list(map(lambda x: x.to_html(), self.children)))
-        return f"<{self.tag}>{content}</{self.tag}>"
-
-
+        if not isinstance(children, list) or not children:
+            raise ValueError("Children must be a populated list")
         
+        if not isinstance(children, list) or not all(isinstance(child, (ParentNode, LeafNode)) for child in children):
+            raise ValueError("Children must be a non-empty list of ParentNode or LeafNode objects")
+            
+        if not isinstance(tag, str) or not tag:
+            raise ValueError("Tag must be a populated string")  
+            
+        super().__init__(tag=tag, children=children, props=props)       
+        
+
+    def to_html(self):       
+        
+        html_string = []
+        html_string.append(f"<{self.tag}>")
+
+        for child in self.children:
+            html_string.append(child.to_html())
+
+        html_string.append(f"</{self.tag}>")
+        return ''.join(html_string)
     
         
         
