@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -25,6 +25,18 @@ class TestHTMLNode(unittest.TestCase):
         node2 = LeafNode("a", "click me!", {"href": "https://www.google.com", "target": "_blank",})
         print(node2.to_html())
 
+    def test_parent_node_to_html(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+
+        print(node.to_html())
          
 
 if __name__ == "__main__":
