@@ -28,9 +28,9 @@ class HTMLNode():
 class LeafNode(HTMLNode):
     
     def __init__(self, tag, value, props=None):
-
-        if not value or not isinstance(value, str):
-            raise ValueError("LeafNode value must be a non-empty string")
+        
+        if not isinstance(value, str):
+            raise ValueError("LeafNode value must be a string")
         
         if props is not None and not isinstance(props, dict):
             raise ValueError("props must be either a dictionary or None")
@@ -76,22 +76,22 @@ class ParentNode(HTMLNode):
 def text_node_to_html_node(text_node):
     accepted_types = ("text", "bold", "itallic", "code", "link", "image")
 
-    if text_node.type not in accepted_types:
+    if text_node.text_type not in accepted_types:
         raise Exception(f"Text type not supported. Must be one of the following {accepted_types}")
         
-    match text_node.type:
+    match text_node.text_type:
         case "text":
-            return LeafNode(None, text_node.value)
+            return LeafNode(None, text_node.text)
         case "bold":
-            return LeafNode("b", text_node.value)
+            return LeafNode("b", text_node.text)
         case "itallic":
-            return LeafNode("i", text_node.value)
+            return LeafNode("i", text_node.text)
         case "code":
-            return LeafNode("code", text_node.value)
+            return LeafNode("code", text_node.text)
         case "link":
-            return LeafNode("a", text_node.value, {"href": text_node.url})
+            return LeafNode("a", text_node.text, {"href": text_node.url})
         case "image":
-            return LeafNode("img", None, {"src": text_node.url, "alt": text_node.alt})
+            return LeafNode("img", "", {"src": text_node.url, "alt": text_node.alt_text})
         case _:
             raise ValueError(f"Unexpected type encountered. Accepted types: {accepted_types}")
         

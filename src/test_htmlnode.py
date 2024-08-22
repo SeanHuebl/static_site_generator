@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock
 from htmlnode import *
+from textnode import TextNode
 
 
 
@@ -56,7 +57,8 @@ class TestHTMLNode(unittest.TestCase):
             [
                 ParentNode("h1", [LeafNode("b", "Bold text"),]),
                 ParentNode("h2", [ParentNode("h3", [LeafNode(None, "Normal text"),]), 
-                                  ParentNode("h4", [LeafNode(None, "Normal text"), LeafNode("i", "italic text"),])]),
+                                  ParentNode("h4", [LeafNode(None, "Normal text"), LeafNode("i", "italic text"),])
+                                  ]),
                 LeafNode("i", "italic text"),
 
             ],
@@ -64,17 +66,34 @@ class TestHTMLNode(unittest.TestCase):
         node2.to_html()
         
     def test_text_node_text(self):
-        mock_text_node = Mock()
-        mock_text_node.type = "text"
-        mock_text_node.value = "hello I am a plain text node"
-        node = text_node_to_html_node(mock_text_node)
+        text_node = TextNode("text", "I am a plain text node", None, None)        
+        node = text_node_to_html_node(text_node)
         print(node.to_html())
 
     def test_text_node_bold(self):
-        mock_bold = Mock()
-        mock_bold.type = "bold"
-        mock_bold.value = "I am a bold text node"
-        node = text_node_to_html_node(mock_bold)
+        text_node = TextNode("bold", "I am a bold text node")
+        node = text_node_to_html_node(text_node)
         print(node.to_html())
+
+    def test_text_node_itallic(self):
+        text_node = TextNode("itallic", "I am an itallic text node")
+        node = text_node_to_html_node(text_node)
+        print(node.to_html())
+    
+    def test_text_node_code(self):
+        text_node = TextNode("code", "I am a code text node")
+        node = text_node_to_html_node(text_node)
+        print(node.to_html())
+    
+    def test_text_node_link(self):
+        text_node = TextNode("link", "I am a link text node", "www.google.com")
+        node = text_node_to_html_node(text_node)
+        print(node.to_html())
+
+    def test_text_node_img(self):
+        text_node = TextNode("image", "", "/static/img.1", "this is an image text node")
+        node = text_node_to_html_node(text_node)
+        print(node.to_html())
+        
 if __name__ == "__main__":
     unittest.main()
