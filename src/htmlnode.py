@@ -20,11 +20,8 @@ class HTMLNode():
     
     def __repr__(self) -> str:
         
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
-    
+        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})" 
          
-
-    
 class LeafNode(HTMLNode):
     
     def __init__(self, tag, value, props=None):
@@ -69,9 +66,7 @@ class ParentNode(HTMLNode):
             html_string.append(child.to_html())
 
         html_string.append(f"</{self.tag}>")
-        return ''.join(html_string)
-    
-
+        return ''.join(html_string)    
 
 def text_node_to_html_node(text_node):
     accepted_types = ("text", "bold", "itallic", "code", "link", "image")
