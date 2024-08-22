@@ -71,5 +71,28 @@ class ParentNode(HTMLNode):
         html_string.append(f"</{self.tag}>")
         return ''.join(html_string)
     
+
+
+def text_node_to_html_node(text_node):
+    accepted_types = ("text", "bold", "itallic", "code", "link", "image")
+
+    if text_node.type not in accepted_types:
+        raise Exception(f"Text type not supported. Must be one of the following {accepted_types}")
+        
+    match text_node.type:
+        case "text":
+            return LeafNode(None, text_node.value)
+        case "bold":
+            return LeafNode("b", text_node.value)
+        case "itallic":
+            return LeafNode("i", text_node.value)
+        case "code":
+            return LeafNode("code", text_node.value)
+        case "link":
+            return LeafNode("a", text_node.value, {"href": text_node.url})
+        case "image":
+            return LeafNode("img", None, {"src": text_node.url, "alt": text_node.alt})
+        case _:
+            raise ValueError(f"Unexpected type encountered. Accepted types: {accepted_types}")
         
         

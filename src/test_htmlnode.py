@@ -1,6 +1,7 @@
 import unittest
+from unittest.mock import Mock
+from htmlnode import *
 
-from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -62,5 +63,18 @@ class TestHTMLNode(unittest.TestCase):
         )
         node2.to_html()
         
+    def test_text_node_text(self):
+        mock_text_node = Mock()
+        mock_text_node.type = "text"
+        mock_text_node.value = "hello I am a plain text node"
+        node = text_node_to_html_node(mock_text_node)
+        print(node.to_html())
+
+    def test_text_node_bold(self):
+        mock_bold = Mock()
+        mock_bold.type = "bold"
+        mock_bold.value = "I am a bold text node"
+        node = text_node_to_html_node(mock_bold)
+        print(node.to_html())
 if __name__ == "__main__":
     unittest.main()
