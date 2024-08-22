@@ -28,8 +28,13 @@ class HTMLNode():
 class LeafNode(HTMLNode):
     
     def __init__(self, tag, value, props=None):
-        if not value:
-            raise ValueError
+
+        if not value or not isinstance(value, str):
+            raise ValueError("LeafNode value must be a non-empty string")
+        
+        if props is not None and not isinstance(props, dict):
+            raise ValueError("props must be either a dictionary or None")
+        
         super().__init__(tag=tag, value=value, props=props)        
 
     def to_html(self):        

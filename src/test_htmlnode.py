@@ -36,7 +36,7 @@ class TestHTMLNode(unittest.TestCase):
             ],
         )
 
-        # print(node.to_html())
+        node.to_html()
     def test_nested_parents(self):
         node = ParentNode(
             "p",
@@ -47,7 +47,20 @@ class TestHTMLNode(unittest.TestCase):
 
             ],
         )
-        print(node.to_html())     
+        node.to_html()
 
+    def test_nested_parents_two(self):
+        node2 = ParentNode(
+            "p",
+            [
+                ParentNode("h1", [LeafNode("b", "Bold text"),]),
+                ParentNode("h2", [ParentNode("h3", [LeafNode(None, "Normal text"),]), 
+                                  ParentNode("h4", [LeafNode(None, "Normal text"), LeafNode("i", "italic text"),])]),
+                LeafNode("i", "italic text"),
+
+            ],
+        )
+        node2.to_html()
+        
 if __name__ == "__main__":
     unittest.main()
