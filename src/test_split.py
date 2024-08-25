@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode
-from split_node import split_nodes_delimiter
+from split_node import split_nodes_delimiter, split_nodes_link
 
 class TestSplitNode(unittest.TestCase):
     def test_snd(self):
@@ -13,5 +13,11 @@ class TestSplitNode(unittest.TestCase):
         print(split_nodes_delimiter([text_node3], "`", 'text'))
         non_text_node = TextNode('This whole node is bold', 'bold')
         print(split_nodes_delimiter([non_text_node], '`', 'text'))
+
+    def test_split_links(self):
+        node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and", 'text')
+        print(split_nodes_link([node]))
+        node2 = TextNode('[to boot dev](https://www.bootdev.com)', 'text')
+        print(split_nodes_link([node2]))
 if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,5 @@
 from textnode import TextNode
+from extract import *
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
@@ -37,3 +38,43 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             else:
                 new_nodes.append(TextNode(sections[i], split_type))
     return new_nodes
+
+def split_nodes_link(old_nodes):
+    new_nodes = []
+
+    for node in old_nodes:
+        links = extract_markdown_links(node.text)
+        sections = node.text.split(f'[{alt}]({url})', 1)
+
+        if len(links) == 1:
+            alt, url = links[0][0], links[0][1] 
+
+            if not sections[0]:
+                new_nodes.append(TextNode(alt, 'link', url))
+            else:
+                new_nodes.append(TextNode(sections[0], 'text'))
+                new_nodes.append(TextNode(alt, 'link', url))
+            if not sections[1]:
+                continue
+            else:
+                new_nodes.append(TextNode(sections[1], 'text'))
+            
+        else:
+            if not extract_markdown_links(sections[1]):
+                continue
+            
+
+
+
+            
+
+        
+
+
+
+        
+        
+        
+    return new_nodes
+
+        
