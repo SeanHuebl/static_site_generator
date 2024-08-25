@@ -1,5 +1,6 @@
 from textnode import TextNode
 from extract import *
+from re import split
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
@@ -43,38 +44,68 @@ def split_nodes_link(old_nodes):
     new_nodes = []
 
     for node in old_nodes:
+        if not node.text:
+            continue
+
         links = extract_markdown_links(node.text)
-        sections = node.text.split(f'[{alt}]({url})', 1)
-
-        if len(links) == 1:
-            alt, url = links[0][0], links[0][1] 
-
-            if not sections[0]:
-                new_nodes.append(TextNode(alt, 'link', url))
+        if not links:
+            new_nodes.append(node)
+        
+        regex_string = '('
+        for i in range(len(links)):
+            alt, url = '', ''
+            alt, url = links[i][0], links[i][1]
+            if i == 0:
+                regex_string += f'\[{alt}\]\({url}\)'
             else:
-                new_nodes.append(TextNode(sections[0], 'text'))
-                new_nodes.append(TextNode(alt, 'link', url))
-            if not sections[1]:
+                regex_string += f'|\[{alt}\]\({url}\)'
+        regex_string += ')'
+
+        results = re.split(regex_string, node.text)
+
+        for i in range(len(results)):
+
+            if not results[i]:
                 continue
+            if i % 2 == 0:
+                new_nodes.append(TextNode(results[i], 'text'))
             else:
-                new_nodes.append(TextNode(sections[1], 'text'))
-            
-        else:
-            if not extract_markdown_links(sections[1]):
-                continue
-            
-
-
-
-            
-
-        
-
-
-
-        
-        
-        
+                alt, url = extract_markdown_links(results[i])[0]    
+                new_nodes.append(TextNode(alt, 'link', url))
+        if not new_nodes:
+            raise ValueError("new_nodes must not be empty")
     return new_nodes
 
+def split_nodes_image(old_nodes):
+    new_nodes = []
+
+    for node in old_nodes:
+        if not node.text:
+            continue
+
+        links = extract_markdown_links(node.text)
+        if not links:
+            new_nodes.append(node)
         
+        regex_string = '('
+        for i in range(len(links)):
+            alt, url = '', ''
+            alt, url = links[i][0], links[i][1]
+            if i == 0:
+                regex_string += f'\!\[{alt}\]\({url}\)'
+            else:
+                regex_string += f'|\!\[{alt}\]\({url}\)'
+        regex_string += ')'
+
+        results = re.split(regex_string, node.text)
+
+        for i in range(len(results)):
+
+            if not results[i]:
+                continue
+            if i % 2 == 0:
+                new_nodes.append(TextNode(results[i], 'text'))
+            else:
+                alt, url = extract_markdown_links(results[i])[0]    
+                new_nodes.append(TextNode(alt, 'image', url))        
+    return new_nodes
