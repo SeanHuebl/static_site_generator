@@ -2,7 +2,7 @@ from textnode import TextNode
 from extract import *
 from re import split
 
-def split_nodes_delimiter(old_nodes, delimiter, text_type):
+def split_nodes_delimiter(old_nodes, delimiter):
 
     if not old_nodes or not isinstance(old_nodes,list) or not all(isinstance(node, TextNode) for node in old_nodes):
         raise ValueError("Old_nodes must be a populated list of TextNode objects")
@@ -44,13 +44,10 @@ def split_nodes_link(old_nodes):
     new_nodes = []
 
     for node in old_nodes:
-        if not node.text:
+        if not node.text:            
             continue
-
-        links = extract_markdown_links(node.text)
-        if not links:
-            new_nodes.append(node)
         
+        links = extract_markdown_links(node.text)        
         regex_string = '('
         for i in range(len(links)):
             alt, url = '', ''
