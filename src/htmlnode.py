@@ -1,4 +1,4 @@
-
+from enums import TextType
 
 class HTMLNode():
     def __init__(self, tag=None, value=None, children=None, props=None):
@@ -69,23 +69,23 @@ class ParentNode(HTMLNode):
         return ''.join(html_string)    
 
 def text_node_to_html_node(text_node):
-    accepted_types = ("text", "bold", "itallic", "code", "link", "image")
+    accepted_types = (TextType.TEXT, TextType.BOLD, TextType.ITALIC, TextType.CODE, TextType.LINK, TextType.IMAGE)
 
     if text_node.text_type not in accepted_types:
         raise Exception(f"Text type not supported. Must be one of the following {accepted_types}")
         
     match text_node.text_type:
-        case "text":
+        case TextType.TEXT:
             return LeafNode(None, text_node.text)
-        case "bold":
+        case TextType.BOLD:
             return LeafNode("b", text_node.text)
-        case "itallic":
+        case TextType.ITALIC:
             return LeafNode("i", text_node.text)
-        case "code":
+        case TextType.CODE:
             return LeafNode("code", text_node.text)
-        case "link":
+        case TextType.LINK:
             return LeafNode("a", text_node.text, {"href": text_node.url})
-        case "image":
+        case TextType.IMAGE:
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.alt_text})
         case _:
             raise ValueError(f"Unexpected type encountered. Accepted types: {accepted_types}")

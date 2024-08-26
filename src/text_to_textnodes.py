@@ -1,9 +1,10 @@
 from split_node import *
 from textnode import *
 import re
+from enums import TextType
 
 def text_to_textnodes(raw_text):
-    text = TextNode(raw_text, 'text')
+    text = TextNode(raw_text, TextType.TEXT)
     delimiters = ('**', '*', '`')
     
     nodes = split_nodes_delimiter([text], delimiters[2])

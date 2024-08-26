@@ -1,6 +1,7 @@
 from textnode import TextNode
-from extract import *
+from extract import extract_markdown_images, extract_markdown_links
 from re import split
+from enums import TextType
 
 def split_nodes_delimiter(old_nodes, delimiter):
 
@@ -12,11 +13,11 @@ def split_nodes_delimiter(old_nodes, delimiter):
     
     match delimiter:
         case "**":
-            split_type = 'bold'
+            split_type = TextType.BOLD
         case "*":
-            split_type = 'itallic'
+            split_type = TextType.ITALIC
         case "`":
-            split_type = 'code'
+            split_type = TextType.CODE
         case _:
             raise ValueError("Invalid delimiter type. Must use: **, *, or `")
         
@@ -42,7 +43,6 @@ def split_nodes_delimiter(old_nodes, delimiter):
 
 def split_nodes_link(old_nodes):
     new_nodes = []
-
     for node in old_nodes:
         if not node.text:            
             continue
@@ -51,26 +51,18 @@ def split_nodes_link(old_nodes):
         if not links:
             new_nodes.append(node)
             continue
-        text = node.text
-        print(links)
-        for link in links:
-            alt = link[0]
-            url = link[1]
-            results = text.split(f"[{alt}]({url})", 1)
-            
-
-
-        for i in range(len(results)):
-
-            if not results[i]:
-                continue
-            if i % 2 == 0:
-                new_nodes.append(TextNode(results[i], 'text'))
-            else:
-                alt, url = extract_markdown_links(results[i])[0]    
-                new_nodes.append(TextNode(alt, 'link', url))
-        if not new_nodes:
-            raise ValueError("new_nodes must not be empty")
+        current_text = node.text
+        for link in links:                    
+            extracted = current_text.split(f"[{link[0]}]({link[1]})", 1)
+            if extracted[0]:
+                new_nodes.append(TextNode(extracted[0], 'text'))
+                
+            new_nodes.append(TextNode(link[0], 'link', link[1]))
+            current_text = extracted[1]
+        if current_text:
+            new_nodes.append(TextNode(current_text, 'text'))
+        
+                
     return new_nodes
 
 def split_nodes_image(old_nodes):

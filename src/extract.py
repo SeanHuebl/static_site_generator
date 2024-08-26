@@ -2,15 +2,22 @@ import re
 
 
 def extract_markdown_images(text):
-    matches_alt = list(map(lambda x: x.strip("![]"), re.findall(r"(\!\[\w.*?\])", text)))
-    matches_link = list(map(lambda x: x.strip("()"), re.findall(r"(\(.*?\))", text)))
+    matches = re.findall(r"(\!\[\w.*?\]|(\(.*?\)))", text)
+    if not matches:
+        return
     
-    zipped = list(zip(matches_alt, matches_link))
-    return zipped
+    split_matches = re.findall(r"\!\[\w.*?\]|\(.*?\)", matches[0])
+    
+    final_matches = list(map(lambda x :x.strip('![]()'), split_matches))
+    return final_matches
 
 def extract_markdown_links(text):
-    matches_anchor = list(map(lambda x: x.strip('[]'), re.findall(r"(\[\w.*?\])", text)))
-    matches_link = list(map(lambda x: x.strip("()"), re.findall(r"(\(.*?\))", text)))
-
-    zipped = list(zip(matches_anchor,matches_link))
-    return zipped
+    matches = re.findall(r"(?<!\!)\[\w.*?\]\(.*?\)", text)
+    if not matches:
+        return
+    split_matches = list(map(lambda x: re.findall(r"\[\w.*?\]|\(.*?\)", x), matches))
+    
+    final_matches = list((map(lambda inner_list: tuple(map(lambda x: x.strip('[]()'), inner_list)), split_matches)))
+    
+    return final_matches
+    
