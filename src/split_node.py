@@ -47,18 +47,18 @@ def split_nodes_link(old_nodes):
         if not node.text:            
             continue
         
-        links = extract_markdown_links(node.text)        
-        regex_string = '('
-        for i in range(len(links)):
-            alt, url = '', ''
-            alt, url = links[i][0], links[i][1]
-            if i == 0:
-                regex_string += f'\[{alt}\]\({url}\)'
-            else:
-                regex_string += f'|\[{alt}\]\({url}\)'
-        regex_string += ')'
+        links = extract_markdown_links(node.text)
+        if not links:
+            new_nodes.append(node)
+            continue
+        text = node.text
+        print(links)
+        for link in links:
+            alt = link[0]
+            url = link[1]
+            results = text.split(f"[{alt}]({url})", 1)
+            
 
-        results = re.split(regex_string, node.text)
 
         for i in range(len(results)):
 
@@ -77,12 +77,11 @@ def split_nodes_image(old_nodes):
     new_nodes = []
 
     for node in old_nodes:
-        if not node.text:
-            continue
+        
 
         links = extract_markdown_links(node.text)
-        if not links:
-            new_nodes.append(node)
+        
+        print(links)
         
         regex_string = '('
         for i in range(len(links)):

@@ -8,10 +8,8 @@ def text_to_textnodes(raw_text):
     
     nodes = split_nodes_delimiter([text], delimiters[2])
     nodes_v2 = split_nodes_delimiter(nodes, delimiters[0])
-    nodes_v3 = split_nodes_delimiter(nodes_v2, delimiters[1])
+    nodes_v3 = split_nodes_delimiter(nodes_v2, delimiters[1])        
     nodes_v4 = split_nodes_link(nodes_v3)
-        
-
 
     print(nodes_v4)
 
