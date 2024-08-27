@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import Mock
-from htmlnode import *
-from textnode import TextNode
+
 from enums import TextType
+from htmlnode import HTMLNode, LeafNode, ParentNode
+from textnode import TextNode
 
 
 class TestHTMLNode(unittest.TestCase):

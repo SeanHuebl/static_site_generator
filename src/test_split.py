@@ -1,7 +1,8 @@
 import unittest
-from textnode import TextNode
-from split_node import split_nodes_delimiter, split_nodes_link, split_nodes_image
+
 from enums import TextType
+from split_node import split_nodes_delimiter, split_nodes_link, split_nodes_image
+from textnode import TextNode
 
 class TestSplitNode(unittest.TestCase):
     def test_snd(self):

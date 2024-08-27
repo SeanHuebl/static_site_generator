@@ -1,7 +1,8 @@
-from split_node import *
-from textnode import *
 import re
+
 from enums import TextType
+from split_node import split_nodes_delimiter, split_nodes_image, split_nodes_link
+from textnode import TextNode
 
 def text_to_textnodes(raw_text):
     text = TextNode(raw_text, TextType.TEXT)

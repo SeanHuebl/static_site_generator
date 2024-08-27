@@ -1,7 +1,8 @@
-from textnode import TextNode
-from extract import extract_markdown_images, extract_markdown_links
 from re import split
+
 from enums import TextType
+from extract import extract_markdown_images, extract_markdown_links
+from textnode import TextNode
 
 def split_nodes_delimiter(old_nodes, delimiter):
 
