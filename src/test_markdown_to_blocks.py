@@ -16,10 +16,19 @@ class TestExtract(unittest.TestCase):
             markdown_to_blocks(text)
     def test_block_to_block_type(self):
         #text = '##### Heading'
-        text = '>quote\n>hello'
+        #text = '>quote\n>hello'
+        #text = '```code block```'
+        #text = '* part of an unordered list'
+        #text = '- uo list #2'
+        #text = '1. ordered list\n2. list2\n3. list3'
+        #text = 'this is just a paragraph'
+        with self.assertRaises(ValueError):
+            block_to_block_type('* list started\n next line doesnt have correct format')
         with self.assertRaises(ValueError):
             block_to_block_type('``` no delimiter at end')
-        print(block_to_block_type(text))
+        with self.assertRaises(ValueError):
+            block_to_block_type('1. o \n3. o')
+        #print(block_to_block_type(text))
     
 if __name__ == "__main__":
     unittest.main()

@@ -24,8 +24,18 @@ def block_to_block_type(block):
             
     quote = check_quote_block(block)
     if quote:
-        return quote    
-            
+        return quote
+        
+    un_or_list = check_unordered_list_block(block)
+    if un_or_list:
+        return un_or_list
+    
+    or_list = check_ordered_list_block(block)
+    if or_list:
+        return or_list
+    
+    return BlockType.PARAGRAPH
+
 def check_heading_block(block):
     headings = (BlockType.H1, BlockType.H2, BlockType.H3,
                 BlockType.H4, BlockType.H5, BlockType.H6)
@@ -65,21 +75,25 @@ def check_quote_block(block):
     
     return BlockType.QUOTE
 
-def check_list_block(block):
-    if not re.match(r'^\* |^- |^\. ', block):
+def check_unordered_list_block(block):
+    if not re.match(r'^\* |^- ', block):
         return None
+    
     lines = block.split('\n')
 
-    if re.match(r'^\* |^- ', block):
-        for line in lines:
-            if not re.match(r'^\* |^- ', line):
-                raise ValueError('Every line in an unordered list must start with * or - followed by a space')
-        return BlockType.LIST_UNORDERED
+    for line in lines:
+        if not re.match(r'^\* |^- ', line):
+            raise ValueError('Every line in an unordered list must start with * or - followed by a space')
+    return BlockType.LIST_UNORDERED    
 
-    if re.match(r'^\. ', block):
-        for line in lines:
-            if not re.match(r'^\. ', line):
-                raise ValueError('Every line in an ordered list must start with . followed by a space')
-        return BlockType.LIST_ORDERED
+def check_ordered_list_block(block):
+    if not re.match(r'^1\. ', block):
+        return None
     
-    return None
+    lines = block.split('\n')
+    n = 1
+    for line in lines:
+        if not re.match(fr'^{n}\. ', line):
+            raise ValueError('Ordered lists must start at 1 and increment by 1, followed by a .')
+        n += 1
+    return BlockType.LIST_ORDERED
