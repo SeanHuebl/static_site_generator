@@ -16,7 +16,10 @@ class TestExtract(unittest.TestCase):
             markdown_to_blocks(text)
     def test_block_to_block_type(self):
         #text = '##### Heading'
-        text = 'no codeblock'
+        text = '>quote\n>hello'
+        with self.assertRaises(ValueError):
+            block_to_block_type('``` no delimiter at end')
         print(block_to_block_type(text))
+    
 if __name__ == "__main__":
     unittest.main()
