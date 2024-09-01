@@ -13,5 +13,5 @@ def text_to_textnodes(raw_text):
     nodes_v3 = split_nodes_delimiter(nodes_v2, delimiters[1])        
     nodes_v4 = split_nodes_link(nodes_v3)
     nodes_v5 = split_nodes_image(nodes_v4)
-    print(nodes_v5)
+    return nodes_v5
 

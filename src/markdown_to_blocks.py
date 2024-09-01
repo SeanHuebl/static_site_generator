@@ -62,7 +62,7 @@ def check_code_block(block):
     
     return BlockType.CODE
 
-def check_quote_block(block):
+def check_quote_block(block):   
     
     if not re.match(r'^>', block):
         return None
