@@ -82,7 +82,7 @@ def split_nodes_image(old_nodes):
             if extracted[0]:
                 new_nodes.append(TextNode(extracted[0], TextType.TEXT))
                 
-            new_nodes.append(TextNode(img[0], TextType.IMAGE, img[1]))
+            new_nodes.append(TextNode(None, TextType.IMAGE, img[1], img[0]))
             current_text = extracted[1]
         if current_text:
             new_nodes.append(TextNode(current_text, TextType.TEXT))
