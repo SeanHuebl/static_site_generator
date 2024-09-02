@@ -74,7 +74,7 @@ class ParentNode(HTMLNode):
     
     def __repr__(self) -> str:
         
-        return f"ParentNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f"ParentNode({self.tag}, {self.children}, {self.props})"
     
 def text_node_to_html_node(text_node):
     accepted_types = (TextType.TEXT, TextType.BOLD, TextType.ITALIC, TextType.CODE, TextType.LINK, TextType.IMAGE)

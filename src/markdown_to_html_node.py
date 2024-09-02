@@ -1,8 +1,7 @@
-from functools import reduce
 import re
 
 from enums import BlockType
-from htmlnode import HTMLNode, ParentNode, LeafNode, text_node_to_html_node
+from htmlnode import ParentNode, text_node_to_html_node
 from markdown_to_blocks import markdown_to_blocks, block_to_block_type
 from text_to_textnodes import text_to_textnodes
 
@@ -13,10 +12,8 @@ def markdown_to_html_node(markdown):
 
     for block in blocks:
         
-        block_type = block_to_block_type(block)
-        print(block_type)
+        block_type = block_to_block_type(block)        
         new_block = re.sub(fr'^(({heading_char}){{0,6}} |>|\* |\- |\d+\. |```)|```$', '', block, flags=re.MULTILINE)
-        print(new_block)
         children = text_to_leafnode_children(new_block)
         
         match block_type:
@@ -33,14 +30,18 @@ def markdown_to_html_node(markdown):
             case BlockType.H6:
                 html_nodes.append(ParentNode(BlockType.H6.value, children))
             case BlockType.CODE:
-                html_nodes.append(ParentNode(BlockType.CODE.value, children))
+                html_nodes.append(ParentNode('pre', [ParentNode(BlockType.CODE.value, children)]))
             case BlockType.QUOTE:         
                 html_nodes.append(ParentNode(BlockType.QUOTE.value, children))
             case BlockType.LIST_UNORDERED:                
                 html_nodes.append(ParentNode(BlockType.LIST_UNORDERED.value, list_to_leafnode_children(new_block)))
-                print(html_nodes)
-            
-
+            case BlockType.LIST_ORDERED:
+                html_nodes.append(ParentNode(BlockType.LIST_ORDERED.value, list_to_leafnode_children(new_block)))
+            case BlockType.PARAGRAPH:
+                html_nodes.append(ParentNode(BlockType.PARAGRAPH.value, children))
+            case _:
+                raise ValueError("BlockType not valid. Must be a value from the BlockType class under enums.py")
+    return ParentNode('div', html_nodes)
 
 def text_to_leafnode_children(block):
     leaf_nodes = []
@@ -50,11 +51,15 @@ def text_to_leafnode_children(block):
     return leaf_nodes
 
 def list_to_leafnode_children(block):
-    li_parents = []            
+    children_list = []         
     lines = re.split(r'\n(?![\t ]| {4})', block)
     processed_lines = [re.sub(r'\n\t| {3,4}', '', line) for line in lines]
-    print(processed_lines)
+    
     for line in processed_lines:
+        line = line.replace('\n', '<br>\n')
         children = text_to_leafnode_children(line)
-        li_parents.append(ParentNode('li', children))
-    return li_parents
+        for child in children:
+            child.tag = 'li'
+            children_list.append(child)
+
+    return children_list

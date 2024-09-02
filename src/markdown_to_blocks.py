@@ -95,6 +95,8 @@ def check_ordered_list_block(block):
     lines = block.split('\n')
     n = 1
     for line in lines:
+        if re.match(r'^ {4}', line):
+            continue
         if not re.match(fr'^{n}\. ', line):
             raise ValueError('Ordered lists must start at 1 and increment by 1, followed by a .')
         n += 1
