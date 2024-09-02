@@ -1,7 +1,6 @@
 import unittest
 
-from enums import BlockType
-from markdown_to_blocks import markdown_to_blocks, block_to_block_type
+from markdown_to_blocks import block_to_block_type, markdown_to_blocks
 
 class TestExtract(unittest.TestCase):
     def test_blocks(self):

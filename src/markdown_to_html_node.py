@@ -2,7 +2,7 @@ import re
 
 from enums import BlockType
 from htmlnode import ParentNode, text_node_to_html_node
-from markdown_to_blocks import markdown_to_blocks, block_to_block_type
+from markdown_to_blocks import block_to_block_type, markdown_to_blocks 
 from text_to_textnodes import text_to_textnodes
 
 def markdown_to_html_node(markdown):

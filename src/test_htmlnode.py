@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import Mock
 
 from enums import TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode, text_node_to_html_node

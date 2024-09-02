@@ -1,7 +1,7 @@
 import unittest
 
 from enums import TextType
-from split_node import split_nodes_delimiter, split_nodes_link, split_nodes_image
+from split_node import split_nodes_delimiter, split_nodes_image, split_nodes_link
 from textnode import TextNode
 
 class TestSplitNode(unittest.TestCase):
