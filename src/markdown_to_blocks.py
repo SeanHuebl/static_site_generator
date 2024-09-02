@@ -79,9 +79,11 @@ def check_unordered_list_block(block):
     if not re.match(r'^\* |^- ', block):
         return None
     
-    lines = block.split('\n')
+    lines = block.split('\n')     
 
     for line in lines:
+        if re.match(r'^ {4}', line):
+            continue
         if not re.match(r'^\* |^- ', line):
             raise ValueError('Every line in an unordered list must start with * or - followed by a space')
     return BlockType.LIST_UNORDERED    

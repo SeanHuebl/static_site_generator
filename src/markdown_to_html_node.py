@@ -36,8 +36,9 @@ def markdown_to_html_node(markdown):
                 html_nodes.append(ParentNode(BlockType.CODE.value, children))
             case BlockType.QUOTE:         
                 html_nodes.append(ParentNode(BlockType.QUOTE.value, children))
-            case BlockType.LIST_UNORDERED:
+            case BlockType.LIST_UNORDERED:                
                 html_nodes.append(ParentNode(BlockType.LIST_UNORDERED.value, list_to_leafnode_children(new_block)))
+                print(html_nodes)
             
 
 
@@ -50,8 +51,10 @@ def text_to_leafnode_children(block):
 
 def list_to_leafnode_children(block):
     li_parents = []            
-    lines = block.split('\n')
-    for line in lines:
+    lines = re.split(r'\n(?![\t ]| {4})', block)
+    processed_lines = [re.sub(r'\n\t| {3,4}', '', line) for line in lines]
+    print(processed_lines)
+    for line in processed_lines:
         children = text_to_leafnode_children(line)
         li_parents.append(ParentNode('li', children))
     return li_parents

@@ -59,7 +59,7 @@ class ParentNode(HTMLNode):
             raise ValueError("Tag must be a populated string")  
             
         super().__init__(tag=tag, children=children, props=props)       
-        
+    
 
     def to_html(self):       
         
@@ -71,7 +71,11 @@ class ParentNode(HTMLNode):
 
         html_string.append(f"</{self.tag}>")
         return ''.join(html_string)    
-
+    
+    def __repr__(self) -> str:
+        
+        return f"ParentNode({self.tag}, {self.value}, {self.children}, {self.props})"
+    
 def text_node_to_html_node(text_node):
     accepted_types = (TextType.TEXT, TextType.BOLD, TextType.ITALIC, TextType.CODE, TextType.LINK, TextType.IMAGE)
 
