@@ -5,7 +5,7 @@ import textwrap
 from markdown_to_html_node import markdown_to_html_node
 
 def extract_title(markdown):
-    title = re.match(r'^#{1} (.*?)$', markdown)
+    title = re.match(r'^# (.*?)$', markdown, re.MULTILINE)
     if not title:
         raise Exception("Markdown does not contain a title / h1")
     else:
@@ -23,6 +23,8 @@ def generate_page(from_path, template_path, destination_path):
 
     html_node = markdown_to_html_node(textwrap.dedent(markdown_contents))
 
-    html_String = html_node.to_html()
-    print(html_String)
+    html_string = html_node.to_html()
+
     title = extract_title(markdown_contents)
+    full_html = template_contents.replace('{{ Title }}', title).replace('{{ Content }}', html_string)
+    print(full_html)
