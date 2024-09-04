@@ -32,7 +32,7 @@ class TestMDtoHTMLNode(unittest.TestCase):
         2. another ordered list
             with a new line'''
     
-        print(markdown_to_html_node(textwrap.dedent(text)))
+        #print(markdown_to_html_node(textwrap.dedent(text)))
 if __name__ == "__main__":
     unittest.main()
 
