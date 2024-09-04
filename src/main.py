@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from generate_page import generate_page
+
 def copy_all_contents(source, destination):
     if not os.path.exists(source):
         raise ValueError('Check source path for errors and make sure the path exists.')
@@ -45,6 +47,7 @@ def remove_destination_dir_contents(destination_dir):
 
 def main():
     copy_all_contents('./static', './public')
+    generate_page('./content/index.md', './template.html', './public/index.html')
 
 
 

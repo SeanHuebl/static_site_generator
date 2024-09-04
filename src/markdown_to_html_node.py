@@ -13,7 +13,7 @@ def markdown_to_html_node(markdown):
     for block in blocks:
         
         block_type = block_to_block_type(block)        
-        new_block = re.sub(fr'^(({heading_char}){{0,6}} |>|\* |\- |\d+\. |```)|```$', '', block, flags=re.MULTILINE)
+        new_block = re.sub(fr'^(({heading_char}){{0,6}} |> |\* |\- |\d+\. |```)|```$', '', block, flags=re.MULTILINE)
         children = text_to_leafnode_children(new_block)
         
         match block_type:
@@ -48,6 +48,7 @@ def text_to_leafnode_children(block):
     text_nodes = text_to_textnodes(block)
     for node in text_nodes:
         leaf_nodes.append(text_node_to_html_node(node))
+        
     return leaf_nodes
 
 def list_to_leafnode_children(block):
@@ -59,7 +60,8 @@ def list_to_leafnode_children(block):
         line = line.replace('\n', '<br>\n')
         children = text_to_leafnode_children(line)
         for child in children:
-            child.tag = 'li'
+            if not child.tag:
+                child.tag = 'li'
             children_list.append(child)
-
+    
     return children_list

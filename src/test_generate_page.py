@@ -12,6 +12,6 @@ class TestGeneratePage(unittest.TestCase):
 
     def test_generate_page(self):
 
-        generate_page('./content/index.md', './template.html', './index.html')
+        generate_page('./content/index.md', './template.html', './public/index.html')
 if __name__ == "__main__":
     unittest.main()

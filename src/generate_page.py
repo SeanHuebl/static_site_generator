@@ -1,4 +1,3 @@
-import os
 import re
 import textwrap
 
@@ -27,4 +26,7 @@ def generate_page(from_path, template_path, destination_path):
 
     title = extract_title(markdown_contents)
     full_html = template_contents.replace('{{ Title }}', title).replace('{{ Content }}', html_string)
-    print(full_html)
+    
+    with open(destination_path, 'w') as f:
+        f.write(full_html)
+    
