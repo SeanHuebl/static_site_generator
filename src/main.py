@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from generate_page import generate_page
+from generate_page import generate_page_recursive
 
 def copy_all_contents(source, destination):
     if not os.path.exists(source):
@@ -47,7 +47,7 @@ def remove_destination_dir_contents(destination_dir):
 
 def main():
     copy_all_contents('./static', './public')
-    generate_page('./content/index.md', './template.html', './public/index.html')
+    generate_page_recursive('./content/', './template.html', './public/')
 
 
 

@@ -1,3 +1,4 @@
+import os
 import re
 import textwrap
 
@@ -30,3 +31,17 @@ def generate_page(from_path, template_path, destination_path):
     with open(destination_path, 'w') as f:
         f.write(full_html)
     
+
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+    contents = os.listdir(dir_path_content)
+
+    for content in contents:
+        src_path = os.path.join(dir_path_content, content)
+        dest_path = os.path.join(dest_dir_path, content)
+        if os.path.isdir(src_path):
+            if not os.path.exists(dest_path):
+                os.mkdir(dest_path)
+            generate_page_recursive(src_path, template_path, dest_path)
+        elif os.path.isfile(src_path):
+            dest_path = dest_path.replace('.md', '.html')
+            generate_page(src_path, template_path, dest_path)
