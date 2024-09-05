@@ -4,12 +4,32 @@ import textwrap
 
 from markdown_to_html_node import markdown_to_html_node
 
-def extract_title(markdown):
+def extract_title(markdown: str) -> str:
+    """
+    Parses a markdown document to find the first level-1 heading (`# heading`) and extracts the heading text.
+
+    This function searches for the first occurrence of a Markdown heading starting with `#` 
+    and returns the text following the `#` character. If no such heading is found, an exception is raised.
+
+    Args:
+        markdown (str): The markdown document, as a single string.
+
+    Returns:
+        str: The extracted heading text without the leading `#`.
+
+    Raises:
+        Exception: If no level-1 heading is found in the markdown document.
+    """
+    # Search for the first match of a level-1 heading (`# heading`) in the markdown document.
+    # The text after the `#` is captured in a group for extraction.
     title = re.match(r'^# (.*?)$', markdown, re.MULTILINE)
+
+    # If a title is not found, raise an exception to notify the user that the document lacks an H1 heading.
     if not title:
-        raise Exception("Markdown does not contain a title / h1")
-    else:
-        return title.group(1)
+        raise Exception("Markdown does not contain a title / H1 heading")
+
+    # Return the captured group, which contains the heading text without the `#`.
+    return title.group(1)
     
 
 def generate_page(from_path, template_path, destination_path):

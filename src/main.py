@@ -3,7 +3,7 @@ import shutil
 
 from generate_page import generate_page_recursive
 
-def copy_all_contents(source, destination):
+def copy_all_contents(source: str, destination: str) -> None:
     """
     Copies all files and directories from a source path to a destination path.
 
@@ -36,7 +36,7 @@ def copy_all_contents(source, destination):
     
     print('Copy completed')
 
-def copy_files(source, destination):
+def copy_files(source: str, destination: str) -> None:
     """
     This function recursively searches through the source path for files to copy.
 
@@ -77,7 +77,7 @@ def copy_files(source, destination):
         else:
             raise ValueError(f"The path '{src_path}' is neither a file nor a directory.")
             
-def remove_destination_dir_contents(destination_dir):   
+def remove_destination_dir_contents(destination_dir: str) -> None:   
     """
     Recursively deletes all files and directories within a specified directory.
 
@@ -117,7 +117,7 @@ def remove_destination_dir_contents(destination_dir):
     
         
 
-def main():
+def main() -> None:
     """
     Main function to execute the static site generation process.
 
