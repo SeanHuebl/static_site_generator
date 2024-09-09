@@ -37,12 +37,9 @@ class TestMDtoHTMLNode(unittest.TestCase):
         1. here is ordered list
         2. another ordered list
             with a new line'''
-     
-        # Normalize input text by replacing tabs with four spaces and stripping excess whitespace
-        normalized_text = textwrap.dedent(text).replace('\t', '    ')
 
         # Generate the HTML node structure from Markdown
-        html_node = markdown_to_html_node(normalized_text)
+        html_node = markdown_to_html_node(text)
 
         # Expected HTML structure for the given Markdown input
         expected_html = (
