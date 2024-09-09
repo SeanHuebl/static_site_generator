@@ -45,7 +45,7 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
 
         # Clean up the block content by removing Markdown-specific syntax (e.g., `#` for headings, `>` for quotes).
         # This is necessary to isolate the text content that will be placed inside HTML tags.
-        new_block = re.sub(fr'^(({heading_char}){{0,6}} |> |\* |\- |\d+\. |```)|```$', '', block, flags=re.MULTILINE)
+        new_block = re.sub(fr'^(({heading_char}){{0,6}} |> ?|\* |\- |\d+\. |```)|```$', '', block, flags=re.MULTILINE)
 
         # Convert the cleaned block text into a list of `LeafNode` children.
         # This step breaks down the text content into smaller HTML components (e.g., spans, links).
